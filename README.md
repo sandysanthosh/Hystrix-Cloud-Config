@@ -12,23 +12,6 @@ pom.xml:
     Spring-Cloud-Starter-netflix-hystrix
 
 ```
-#### In application.yml:
-
-```
-filters:
-  -name : circuitbreaker
-  -args : 
-      name :  Payment-service
-      fallback : forward:/payment-fallback
- 
- filters:
-  -name : circuitbreaker
-  -args : 
-      name :  Order-service
-      fallback : forward:/order-fallback
-  
-    
-```
 
 #### Pom.xml:
 
@@ -64,10 +47,52 @@ product.setPrice(product.getPrice().subtract(coupon.getDiscount));
 return repo.save(product);
 }
 
+
+@RequestMapping("/order-fallback")
+public Mono<String> orderServiceFallBack(){
+return Mono.Just("Payment For so long");
+}
+
 public Product sendErrorRespose(Product Product){
 return Product;
 }
 ```
+
+#### In application.yml:
+
+```
+filters:
+  -name : circuitbreaker
+  -args : 
+      name :  Payment-service
+      fallback : forward:/payment-fallback
+ 
+ filters:
+  -name : circuitbreaker
+  -args : 
+      name :  Order-service
+      fallback : forward:/order-fallback
+      
+ management:
+    endpoints:
+      web:
+       exposure:
+           include:hystrix-stream
+           
+           
+ hystrix:
+   command:
+     fallback cmd:
+        execution:
+          isolation:
+             thread:
+                   timeoutInMilliSeconds: 5000
+             
+      
+  
+    
+```
+
 
 #### EnableHystrixDashboard:
 
