@@ -52,7 +52,6 @@ filters:
 @EnableHstrixDashboard
 @EnableHystrix
 @SpringBootApplication
-
 ```
 
 #### RestController.java:
@@ -68,23 +67,28 @@ return repo.save(product);
 public Product sendErrorRespose(Product Product){
 return Product;
 }
-
 ```
 
 #### EnableHystrixDashboard:
 
 ```
-@EnableHystrixDashboard
-
+@EnableHstrixDashboard
+@EnableHystrix
+@SpringBootApplication
 ```   
 
 #### Application.Properties:
 
 ```
-
 server.port = 9195
+```
 
+#### To Test:
 
+```
+localhost:8989/actuator/hystrix.stream
+
+localhost:9195/hystrix
 ```
 
 
