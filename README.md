@@ -1,6 +1,35 @@
 # Hystrix-Cloud-Config
 
 
+    * Fault Tolerancee
+    * Circuit Breaker
+
+#### In Gateway:
+
+```
+pom.xml:
+
+    Spring-Cloud-Starter-netflix-hystrix
+
+```
+#### In application.yml:
+
+```
+filters:
+  -name : circuitbreaker
+  -args : 
+      name :  Payment-service
+      fallback : forward:/payment-fallback
+ 
+ filters:
+  -name : circuitbreaker
+  -args : 
+      name :  Order-service
+      fallback : forward:/order-fallback
+  
+    
+```
+
 #### Pom.xml:
 
 ```
@@ -22,7 +51,8 @@
 ```
 @EnableHstrixDashboard
 @EnableHystrix
-@EnableHstrixDashboard
+@SpringBootApplication
+
 ```
 
 #### RestController.java:
@@ -41,8 +71,21 @@ return Product;
 
 ```
 
-      
+#### EnableHystrixDashboard:
 
+```
+@EnableHystrixDashboard
+
+```   
+
+#### Application.Properties:
+
+```
+
+server.port = 9195
+
+
+```
 
 
 
